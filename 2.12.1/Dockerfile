@@ -5,6 +5,7 @@ MAINTAINER Oscar Fonts <oscar.fonts@geomati.co>
 ENV GEOSERVER_VERSION 2.12.1
 ENV GEOSERVER_DATA_DIR /var/local/geoserver
 ENV GEOSERVER_INSTALL_DIR /usr/local/geoserver
+ENV GEOSERVER_EXTENSIONS_DIR /var/local/geoserver-exts
 
 # Uncomment to use APT cache (requires apt-cacher-ng on host)
 #RUN echo "Acquire::http { Proxy \"http://`/sbin/ip route|awk '/default/ { print $3 }'`:3142\"; };" > /etc/apt/apt.conf.d/71-apt-cacher-ng
@@ -39,6 +40,14 @@ RUN mkdir ${GEOSERVER_DATA_DIR} \
 	&& unzip geoserver.war \
 	&& mv data/* ${GEOSERVER_DATA_DIR} \
 	&& rm -rf geoserver-${GEOSERVER_VERSION}-war.zip geoserver.war target *.txt
+
+
+# Vector Tiles
+RUN mkdir -p ${GEOSERVER_EXTENSIONS_DIR} \
+	&& wget http://sourceforge.net/projects/geoserver/files/GeoServer/${GEOSERVER_VERSION}/extensions/geoserver-${GEOSERVER_VERSION}-vectortiles-plugin.zip \
+	&& unzip geoserver-${GEOSERVER_VERSION}-vectortiles-plugin.zip -d ${GEOSERVER_EXTENSIONS_DIR} \
+	&& rm -rf geoserver-${GEOSERVER_VERSION}-vectortiles-plugin.zip
+
 
 # Enable CORS
 RUN sed -i '\:</web-app>:i\

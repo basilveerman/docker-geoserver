@@ -1,6 +1,8 @@
 docker-geoserver
 ================
 
+*Forked from https://github.com/oscarfonts/docker-geoserver*
+
 Dockerized GeoServer.
 
 
